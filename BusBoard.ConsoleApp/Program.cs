@@ -20,11 +20,19 @@ namespace BusBoard.ConsoleApp
             client.UseNewtonsoftJson();
 
             string postcode = Console.ReadLine();
-
             string postUrl = $"https://api.postcodes.io/postcodes/{postcode}";
-            var postRequest = new RestRequest(postUrl);
-            var postResponse = await client.GetAsync(postRequest);
-            var postJson = JsonConvert.DeserializeObject<Postcode>(postResponse.Content);
+
+            async Task<RestResponse> fetchMethod(string urlAddress)
+            {
+                var request = new RestRequest(urlAddress);
+                var response = await client.GetAsync(request);
+                return response;
+            }
+
+            var postResponse = fetchMethod(postUrl);
+
+            var postResult = postResponse.Result;
+            var postJson = JsonConvert.DeserializeObject<Postcode>(postResult.Content);
 
             double postLat = postJson.result.latitude;
             double postLon = postJson.result.longitude;
@@ -33,9 +41,10 @@ namespace BusBoard.ConsoleApp
             Console.WriteLine(Math.Round(postLon, 2));
 
             var stopUrl = $"https://api.tfl.gov.uk/StopPoint/?lat={postLat}&lon={postLon}&stopTypes=NaptanPublicBusCoachTram";
-            var stopRequest = new RestRequest(stopUrl);
-            var stopResponse = await client.GetAsync(stopRequest);
-            var stopJson = JsonConvert.DeserializeObject<Root>(stopResponse.Content);
+
+            var stopResponse = fetchMethod(stopUrl);
+            var stopResult = stopResponse.Result;
+            var stopJson = JsonConvert.DeserializeObject<Root>(stopResult.Content);
 
             List<string> busStops = new List<string>();
             List<string> busStopNames = new List<string>();
@@ -54,20 +63,20 @@ namespace BusBoard.ConsoleApp
             for (int i = 0; i < stopLength - 1; i++)
             {
                 var busUrl = $"https://api.tfl.gov.uk/Line/{busLines[i]}/Arrivals/{busStops[i]}";
-                var busRequest = new RestRequest(busUrl);
-                var busResponse = await client.GetAsync(busRequest);
 
-                Console.WriteLine(busUrl);
+                var busResponse = fetchMethod(busUrl);
 
                 Console.WriteLine($"Name of the stop: {busStopNames[i]}");
                 try
                 {
-                    var busJson = JsonConvert.DeserializeObject<Bus>(busResponse.Content);
+                    var busResult = busResponse.Result;
+                    var busJson = JsonConvert.DeserializeObject<Bus>(busResult.Content);
                     Console.WriteLine(busJson.lineName);
                 }
                 catch
                 {
-                    var busJson = JsonConvert.DeserializeObject<List<Bus>>(busResponse.Content);
+                    var busResult = busResponse.Result;
+                    var busJson = JsonConvert.DeserializeObject<List<Bus>>(busResult.Content);
 
                     var busJsonLength = busJson.Count;
                     for (int j = 0; j < busJsonLength - 1; j++)
