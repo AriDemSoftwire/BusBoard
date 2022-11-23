@@ -1,13 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBoard.ConsoleApp", "BusBoard.ConsoleApp\BusBoard.ConsoleApp.csproj", "{446A6CF9-D6EC-49A6-8AD1-F52E1DDA4230}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBoard.Api", "BusBoard.Api\BusBoard.Api.csproj", "{904861A6-1FE9-42C1-B7B3-9FA42BAB5DF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusBoard.Web", "BusBoard.Web\BusBoard.Web.csproj", "{E393DBB4-F3EF-4683-B737-0165AD5853A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{904861A6-1FE9-42C1-B7B3-9FA42BAB5DF1} = {904861A6-1FE9-42C1-B7B3-9FA42BAB5DF1}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +33,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD449A24-6129-4FF1-98D3-CD6D79C81139}
 	EndGlobalSection
 EndGlobal

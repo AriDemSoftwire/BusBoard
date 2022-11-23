@@ -13,12 +13,14 @@ using static BusBoard.Api.ApiProgram;
 
 namespace BusBoard.Api
 {
+
     public static class ApiProgram
     {
+        //public static RestClient client = new RestClient();
 
         public static async Task<RestResponse> fetchMethod(string urlAddress)
         {
-            var client = new RestClient();
+            RestClient client = new RestClient();
             client.UseNewtonsoftJson();
             var request = new RestRequest(urlAddress);
             var response = await client.GetAsync(request);
@@ -27,8 +29,7 @@ namespace BusBoard.Api
 
         public static async Task<double> getLatitude(string post)
         {
-
-            var client = new RestClient();
+            RestClient client = new RestClient();
             client.UseNewtonsoftJson();
             string postUrl = $"https://api.postcodes.io/postcodes/{post}";
             var postResponse = fetchMethod(postUrl);
@@ -41,8 +42,7 @@ namespace BusBoard.Api
 
         public static async Task<double> getLongitude(string post)
         {
-
-            var client = new RestClient();
+            RestClient client = new RestClient();
             client.UseNewtonsoftJson();
             string postUrl = $"https://api.postcodes.io/postcodes/{post}";
             var postResponse = fetchMethod(postUrl);
@@ -55,7 +55,7 @@ namespace BusBoard.Api
 
         public static async Task<Root> getStops(double lat, double lon)
         {
-            var client = new RestClient();
+            RestClient client = new RestClient();
             client.UseNewtonsoftJson();
             var stopUrl = $"https://api.tfl.gov.uk/StopPoint/?lat={lat}&lon={lon}&stopTypes=NaptanPublicBusCoachTram";
             var stopResponse = fetchMethod(stopUrl);
@@ -68,8 +68,7 @@ namespace BusBoard.Api
         {
 
             List<List<string>> listOfRoutes = new List<List<string>>();
-
-            var client = new RestClient();
+            RestClient client = new RestClient();
             client.UseNewtonsoftJson();
 
             for (int i = 0; i < length - 1; i++)

@@ -19,14 +19,18 @@ namespace BusBoard.ConsoleApp
 
             string postcode = Console.ReadLine();
 
-            double latitude = await ApiProgram.getLatitude(postcode);
-            double longitude = await ApiProgram.getLongitude(postcode);
+            var latRes = ApiProgram.getLatitude(postcode);
+            var lonRes = ApiProgram.getLongitude(postcode);
+
+            double latitude = latRes.Result;
+            double longitude = lonRes.Result;
 
             List<string> busStops = new List<string>();
             List<string> busStopNames = new List<string>();
             List<string> busLines = new List<string>();
 
-            var stopInfo = await ApiProgram.getStops(latitude, longitude);
+            var stopInfoRes = ApiProgram.getStops(latitude, longitude);
+            var stopInfo = stopInfoRes.Result;
             var stopLength = stopInfo.stopPoints.Count;
 
             for (int i = 0; i < stopLength - 1; i++)
@@ -36,8 +40,9 @@ namespace BusBoard.ConsoleApp
                 busLines.Add(stopInfo.stopPoints[i].lines[0].name);
             }
 
-            List<List<string>> buses = await ApiProgram.getBuses(stopLength, busLines, busStops);
+            var busRes = ApiProgram.getBuses(stopLength, busLines, busStops);
 
+            List<List<string>> buses = busRes.Result;
 
             for (int i = 0; i < busStopNames.Count - 1; i++)
             {
