@@ -16,7 +16,6 @@ namespace BusBoard.ConsoleApp
     {
         static public void Main(string[] args)
         {
-
             string userPostcode = Console.ReadLine();
 
             var postcodeLatitude = ApiProgram.getLatitudeOfPostcode(userPostcode).latitude;
@@ -27,13 +26,20 @@ namespace BusBoard.ConsoleApp
 
             var listOfStopsWithBuses = ApiProgram.getUpcomingBuses(listOfStopsAtPostcode);
 
-
-            for (int i = 0; i < listOfStopsAtPostcode.Count; i++)
+            for (int i = 0; i < listOfStopsWithBuses.Count; i++)
             {
                 Console.WriteLine($"Name of the stop: {listOfStopsWithBuses[i].commonName}");
-                foreach (var bus in listOfStopsWithBuses[i].upcomingBuses)
+                if (listOfStopsWithBuses[i].upcomingBuses.Count != 0)
                 {
-                    Console.WriteLine(bus.lineName);
+                    foreach (var bus in listOfStopsWithBuses[i].upcomingBuses)
+                    {
+                        Console.WriteLine(bus.lineName);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("There are no upcoming buses at this stop");
+                    continue;
                 }
             }
 

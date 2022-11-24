@@ -1,10 +1,17 @@
-﻿@model BusBoard.Web.ViewModels.BusInfo
-@{
-  ViewBag.Title = "Bus Information";
-}
-
-<h2>BusInfo</h2>
+﻿<h2>BusInfo</h2>
 
 <div class="row">
     <p>You entered postcode @Model.PostCode</p>
 </div>
+
+@foreach (var stop in Model.ListOfStopsWithBuses)
+{
+    <h3>Bus stop: @stop.commonName</h3>
+
+    foreach (var bus in stop.upcomingBuses)
+    {
+        <div class="row">
+             @bus.lineName
+        </div>
+    }
+}

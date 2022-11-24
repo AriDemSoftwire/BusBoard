@@ -4,13 +4,13 @@ namespace BusBoard.Web.ViewModels
 {
     public class BusInfo
     {
-        public BusInfo(string postCode, List<List<string>> buses)
+        public BusInfo(string postCode, List<StopPoints> listOfStopsWithBuses)
         {
             PostCode = postCode;
-            Buses = buses;
+            ListOfStopsWithBuses = listOfStopsWithBuses;
         }
 
         public string PostCode { get; set; }
-        public List<List<string>> Buses { get; set; }
+        public List<StopPoints> ListOfStopsWithBuses { get; set; }
     }
 }

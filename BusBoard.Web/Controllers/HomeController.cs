@@ -18,34 +18,18 @@ namespace BusBoard.Web.Controllers
         [HttpGet]
         public ActionResult BusInfo(PostcodeSelection selection)
         {
-            string postcode = selection.Postcode;
+            string userPostcode = selection.Postcode;
 
-            var latRes = ApiProgram.getLatitude(postcode);
-            var lonRes = ApiProgram.getLongitude(postcode);
+            var postcodeLatitude = ApiProgram.getLatitudeOfPostcode(userPostcode).latitude;
 
-            double latitude = latRes.Result;
-            double longitude = lonRes.Result;
+            var postcodeLongitude = ApiProgram.getLongitudeOfPostcode(userPostcode).longitude;
 
-            List<string> busStops = new List<string>();
-            List<string> busStopNames = new List<string>();
-            List<string> busLines = new List<string>();
+            var listOfStopsAtPostcode = ApiProgram.getStopsInRadius(postcodeLatitude, postcodeLongitude);
 
-            var stopInfoRes = ApiProgram.getStops(latitude, longitude);
-            var stopInfo = stopInfoRes.Result;
-            var stopLength = stopInfo.stopPoints.Count;
+            var listOfStopsWithBuses = ApiProgram.getUpcomingBuses(listOfStopsAtPostcode);
 
-            for (int i = 0; i < stopLength - 1; i++)
-            {
-                busStops.Add(stopInfo.stopPoints[i].naptanId);
-                busStopNames.Add(stopInfo.stopPoints[i].commonName);
-                busLines.Add(stopInfo.stopPoints[i].lines[0].name);
-            }
+            var info = new BusInfo(selection.Postcode, listOfStopsWithBuses);
 
-            var busRes = ApiProgram.getBuses(stopLength, busLines, busStops);
-
-            List<List<string>> buses = busRes.Result;
-
-            var info = new BusInfo(selection.Postcode, buses);
             return View(info);
         }
 
